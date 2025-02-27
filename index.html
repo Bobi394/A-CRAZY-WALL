@@ -48,6 +48,12 @@
             background-color: lightgray;
             border: 1px solid #ccc;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            font-weight: bold;
+            color: black;
         }
 
         .grid-item:hover {
@@ -81,6 +87,7 @@
                 let cell = document.createElement("div");
                 cell.classList.add("grid-item");
                 cell.dataset.index = i;
+                cell.innerText = i + 1; // Zeigt die Zahl auf jedem Feld
                 cell.addEventListener("click", () => selectCell(cell));
                 gridContainer.appendChild(cell);
             }
@@ -97,6 +104,7 @@
                                 cell.style.backgroundImage = `url(${e.target.result})`;
                                 cell.style.backgroundSize = "cover";
                                 cell.style.backgroundPosition = "center";
+                                cell.innerText = ""; // Entfernt die Zahl nach dem Hochladen
                             };
                             reader.readAsDataURL(file);
                         }
