@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10.000 Bilder kaufen</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(100, 10px);
+            grid-template-rows: repeat(100, 10px);
+            gap: 1px;
+            width: 1010px;
+            margin: auto;
+        }
+
+        .grid-item {
+            width: 10px;
+            height: 10px;
+            background-color: lightgray;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .grid-item:hover {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kaufe ein Feld & lade dein Bild hoch!</h1>
+    <div id="grid-container"></div>
+
+    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const gridContainer = document.getElementById("grid-container");
+            const imageUpload = document.getElementById("imageUpload");
+
+            // Grid mit 10.000 Feldern erzeugen
+            for (let i = 0; i < 10000; i++) {
+                let cell = document.createElement("div");
+                cell.classList.add("grid-item");
+                cell.dataset.index = i;
+                cell.addEventListener("click", () => selectCell(cell));
+                gridContainer.appendChild(cell);
+            }
+
+            function selectCell(cell) {
+                let confirmed = confirm(`Möchtest du dieses Feld (#${cell.dataset.index}) für 0,50€ kaufen?`);
+                if (confirmed) {
+                    imageUpload.click(); // Upload-Feld öffnen
+                    imageUpload.onchange = function(event) {
+                        let file = event.target.files[0];
+                        if (file) {
+                            let reader = new FileReader();
+                            reader.onload = function(e) {
+                                cell.style.backgroundImage = `url(${e.target.result})`;
+                                cell.style.backgroundSize = "cover";
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html>
